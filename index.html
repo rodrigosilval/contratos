@@ -1,328 +1,131 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contratos Inteligentes | Fintech</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      font-family: 'Poppins', sans-serif;
-      min-height: 100vh;
-      background: #ffffff;
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2rem;
-    }
-    .main-button {
-      background: #E36D00;
-      border: none;
-      color: #fff;
-      padding: 1.2rem 2.5rem;
-      border-radius: 50px;
-      font-size: 1.2rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin-top: 4rem;
-      box-shadow: 0 8px 24px rgba(227, 109, 0, 0.3);
-    }
-    .main-button:hover {
-      background: #FF7F00;
-      transform: translateY(-2px);
-      box-shadow: 0 12px 32px rgba(227, 109, 0, 0.4);
-    }
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(5px);
-      justify-content: center;
-      align-items: center;
-    }
-    .modal-content {
-      background: #ffffff;
-      padding: 2rem;
-      border-radius: 25px;
-      width: 90%;
-      max-width: 400px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-      animation: fadeIn 0.5s ease;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    .contract-option {
-      background: #f8f8f8;
-      border: 2px solid #eee;
-      width: 100%;
-      padding: 1.5rem;
-      margin: 0.5rem 0;
-      border-radius: 15px;
-      color: #333;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    .contract-option:hover {
-      background: #fff;
-      border-color: #E36D00;
-    }
-    .disabled {
-      background: #f8f8f8;
-      color: #999;
-      cursor: not-allowed;
-    }
-    .form-step {
-      display: none;
-      background: #fff;
-      padding: 2rem;
-      border-radius: 25px;
-      width: 90%;
-      max-width: 600px;
-      margin: 1rem 0;
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
-    }
-    .form-step.active {
-      display: block;
-    }
-    label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: 500;
-      color: #666;
-    }
-    input {
-      width: 100%;
-      padding: 1rem;
-      margin: 1rem 0;
-      background: #f8f8f8;
-      border: 2px solid #eee;
-      border-radius: 12px;
-      color: #333;
-      font-size: 1rem;
-      transition: all 0.3s ease;
-    }
-    input:focus {
-      border-color: #E36D00;
-      outline: none;
-    }
-    input:read-only {
-      background: #f0f0f0;
-    }
-    button[onclick*="nextStep"], button[onclick*="createDocument"] {
-      background: #E36D00;
-      color: #fff;
-      border: none;
-      padding: 1rem 2rem;
-      border-radius: 12px;
-      float: right;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    button[onclick*="nextStep"]:hover, button[onclick*="createDocument"]:hover {
-      background: #FF7F00;
-    }
-    .document-container {
-      background: #fff;
-      padding: 2rem;
-      border-radius: 25px;
-      width: 90%;
-      max-width: 800px;
-      margin: 2rem 0;
-      display: none;
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
-    }
-    .typing-animation {
-      color: #333;
-      line-height: 1.6;
-      font-size: 1rem;
-      border-right: 2px solid #E36D00;
-      white-space: pre-wrap;
-      overflow: hidden;
-      animation: typing 3s steps(40) 1s forwards,
-                 blink-caret 0.75s step-end infinite;
-    }
-    @keyframes typing {
-      from { width: 0; }
-      to { width: 100%; }
-    }
-    @keyframes blink-caret {
-      from, to { border-color: transparent; }
-      50% { border-color: #E36D00; }
-    }
-    .send-button {
-      background: #E36D00;
-      color: #fff;
-      border: none;
-      padding: 1.2rem 2.5rem;
-      border-radius: 50px;
-      font-size: 1.1rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin: 2rem 0;
-      box-shadow: 0 4px 16px rgba(227, 109, 0, 0.3);
-    }
-    .send-button:hover {
-      background: #FF7F00;
-      transform: translateY(-2px);
-    }
-    .boletos-container {
-      background: #fff;
-      padding: 2rem;
-      border-radius: 25px;
-      width: 90%;
-      max-width: 800px;
-      margin: 2rem 0;
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
-      display: none;
-    }
-    .boletos-container h2 {
-      margin-bottom: 1rem;
-      text-align: center;
-      color: #333;
-    }
-    .boleto {
-      background: #f8f8f8;
-      padding: 1.5rem;
-      border-radius: 15px;
-      margin: 1rem 0;
-      transition: all 0.3s ease;
-      border-left: 4px solid #E36D00;
-    }
-    .boleto:hover {
-      transform: translateX(8px);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Contratos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f5f5;
+            padding: 2rem;
+        }
+
+        .dashboard {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .welcome-section h1 {
+            color: #333;
+            margin-bottom: 1.5rem;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn-primary {
+            background: #E36D00;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #E36D00;
+            padding: 12px 24px;
+            border: 2px solid #E36D00;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .stats-grid {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            flex: 1;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid #eee;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            color: #E36D00;
+            margin: 0.5rem 0;
+        }
+
+        .financial-card {
+            background: #fff8f0;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-top: 2rem;
+        }
+
+        .section-title {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+    </style>
 </head>
 <body>
-  <!-- Rest of the HTML remains exactly the same -->
-  <button class="main-button" onclick="showModal()">Criar Contrato</button>
+    <div class="dashboard">
+        <div class="welcome-section">
+            <h1>Bem-vinda de volta, Sarah.</h1>
+       <div class="button-group">
+                <a href="contract.html" class="btn-primary">Criar Contrato</a>
+                <button class="btn-secondary">Contratos Recentes</button>
+            </div>
+        </div>
 
-  <div id="modal" class="modal" onclick="closeModal(event)">
-    <div class="modal-content">
-      <button class="contract-option" onclick="selectContract('rent')">Contrato de Locação</button>
-      <button class="contract-option disabled">Contrato de Empréstimo (Em Breve)</button>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3 class="section-title">Contratos Criados</h3>
+                <div class="stat-number">248</div>
+            </div>
+            <div class="stat-card">
+                <h3 class="section-title">Contratos de Aluguel</h3>
+                <div class="stat-number">156</div>
+            </div>
+            <div class="stat-card">
+                <h3 class="section-title">Contratos de Empréstimo</h3>
+                <div class="stat-number">72</div>
+            </div>
+        </div>
+
+        <div class="financial-card">
+            <h3 class="section-title">Financeiro</h3>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3 class="section-title">Boletos Pendentes</h3>
+                    <div class="stat-number">23</div>
+                </div>
+                <div class="stat-card">
+                    <h3 class="section-title">Boletos Pagos</h3>
+                    <div class="stat-number">154</div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-
-  <div id="formStep1" class="form-step">
-    <label>Endereço do Imóvel:</label>
-    <input type="text" value="Av. Paulista, 1000 - São Paulo/SP" readonly>
-    <button onclick="nextStep(1)">Próximo</button>
-  </div>
-
-  <div id="formStep2" class="form-step">
-    <label>Valor do Aluguel Mensal:</label>
-    <input type="text" value="R$ 3.500,00" readonly>
-    <button onclick="nextStep(2)">Próximo</button>
-  </div>
-
-  <div id="formStep3" class="form-step">
-    <label>Duração do Contrato (meses):</label>
-    <input type="text" value="24" readonly>
-    <button onclick="nextStep(3)">Próximo</button>
-  </div>
-
-  <div id="formStep4" class="form-step">
-    <label>Nome do Locador:</label>
-    <input type="text" value="Maria da Silva" readonly>
-    <button onclick="createDocument()">Gerar Contrato</button>
-  </div>
-
-  <div class="document-container" id="documentContainer">
-    <div class="typing-animation" id="contractContent"></div>
-  </div>
-
-  <div class="boletos-container" id="boletosContainer">
-    <h2>Boletos Gerados</h2>
-    <div id="boletosList"></div>
-  </div>
-
-  <button class="send-button" id="sendButton" style="display: none;">Enviar para Assinatura</button>
-
-  <!-- JavaScript remains exactly the same -->
-  <script>
-    function showModal() {
-      document.getElementById('modal').style.display = 'flex';
-    }
-
-    function closeModal(event) {
-      if (event.target.id === 'modal') {
-        document.getElementById('modal').style.display = 'none';
-      }
-    }
-
-    function selectContract(type) {
-      document.getElementById('modal').style.display = 'none';
-      document.getElementById('formStep1').classList.add('active');
-    }
-
-    function nextStep(currentStep) {
-      document.getElementById(`formStep${currentStep}`).classList.remove('active');
-      document.getElementById(`formStep${currentStep + 1}`).classList.add('active');
-    }
-
-    function createDocument() {
-      document.getElementById('formStep4').classList.remove('active');
-      const content = `CONTRATO DE LOCAÇÃO RESIDENCIAL\n\n` +
-                      `Entre as partes:\n` +
-                      `Locador: Maria da Silva\n` +
-                      `Locatário: [NOME DO LOCATÁRIO]\n\n` +
-                      `Imóvel localizado: Av. Paulista, 1000 - São Paulo/SP\n` +
-                      `Valor do aluguel: R$ 3.500,00 (três mil e quinhentos reais)\n` +
-                      `Prazo: 24 meses\n\n` +
-                      `Cláusulas:\n` +
-                      `1. O locatário se compromete a...`;
-
-      const contractContentElement = document.getElementById('contractContent');
-      contractContentElement.textContent = content;
-      document.getElementById('documentContainer').style.display = 'block';
-      document.getElementById('sendButton').style.display = 'block';
-
-      contractContentElement.removeEventListener('animationend', onTypingAnimationEnd);
-      contractContentElement.addEventListener('animationend', onTypingAnimationEnd);
-    }
-
-    function onTypingAnimationEnd(e) {
-      if (e.animationName === 'typing') {
-        generateBoletos();
-      }
-    }
-
-    function generateBoletos() {
-      const boletosContainer = document.getElementById('boletosContainer');
-      const boletosList = document.getElementById('boletosList');
-      boletosList.innerHTML = '';
-
-      const mockBoletos = [
-        { id: 1, value: "R$ 1.750,00", dueDate: "10/03/2025" },
-        { id: 2, value: "R$ 1.750,00", dueDate: "10/04/2025" },
-        { id: 3, value: "R$ 1.750,00", dueDate: "10/05/2025" }
-      ];
-
-      mockBoletos.forEach(boleto => {
-        const boletoDiv = document.createElement('div');
-        boletoDiv.className = 'boleto';
-        boletoDiv.innerHTML = `<p><strong>Boleto ${boleto.id}</strong></p>
-                               <p>Valor: ${boleto.value}</p>
-                               <p>Vencimento: ${boleto.dueDate}</p>`;
-        boletosList.appendChild(boletoDiv);
-      });
-
-      boletosContainer.style.display = 'block';
-    }
-  </script>
 </body>
 </html>
