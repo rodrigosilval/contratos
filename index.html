@@ -1,131 +1,266 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard de Contratos</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Rod Indica - Empréstimo para Negativados</title>
+  <style>
+    :root {
+      --primary: #FFAB33;
+      --secondary: #ffffff;
+      --accent: #000;
+      --success: #009966;
+      --text-dark: #000;
+      --text-light: #333;
+      --background: #FAFAFA;
+      --white: #fff;
+      --shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    }
 
-        body {
-            background: #f5f5f5;
-            padding: 2rem;
-        }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background-color: var(--background);
+      color: var(--text-dark);
+    }
 
-        .dashboard {
-            background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
+    header {
+      background: var(--white);
+      box-shadow: var(--shadow);
+      padding: 12px 20px;
+      width: 100%;
+      box-sizing: border-box;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
 
-        .welcome-section h1 {
-            color: #333;
-            margin-bottom: 1.5rem;
-        }
+    header .left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
 
-        .button-group {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
+    header .logo {
+      margin: 0;
+      font-weight: bold;
+      font-size: 22px;
+      color: var(--accent);
+    }
 
-        .btn-primary {
-            background: #E36D00;
-            color: white;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-        }
+    header a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+    }
 
-        .btn-secondary {
-            background: white;
-            color: #E36D00;
-            padding: 12px 24px;
-            border: 2px solid #E36D00;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-        }
+    .container {
+      background: var(--secondary);
+      padding: 20px 16px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-sizing: border-box;
+    }
 
-        .stats-grid {
-            display: flex;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
+    .tagline {
+      font-size: 16px;
+      font-weight: bold;
+      color: var(--text-dark);
+      margin-bottom: 20px;
+    }
 
-        .stat-card {
-            flex: 1;
-            padding: 1.5rem;
-            border-radius: 12px;
-            border: 1px solid #eee;
-        }
+    .highlight-negativado {
+      background: var(--accent);
+      color: #fff;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
 
-        .stat-number {
-            font-size: 2rem;
-            color: #E36D00;
-            margin: 0.5rem 0;
-        }
+    .headline {
+      text-align: center;
+      color: var(--text-dark);
+      font-weight: 600;
+      font-size: 19px;
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
 
-        .financial-card {
-            background: #fff8f0;
-            padding: 2rem;
-            border-radius: 12px;
-            margin-top: 2rem;
-        }
+    .benefits {
+      font-size: 15px;
+      color: var(--text-dark);
+      text-align: center;
+      margin-bottom: 20px;
+    }
 
-        .section-title {
-            color: #666;
-            margin-bottom: 1rem;
-        }
+    .benefits span {
+      display: block;
+      margin-bottom: 6px;
+    }
 
-    </style>
+    .image-wrapper {
+      width: 100%;
+      max-width: 320px;
+      margin-bottom: 24px;
+    }
+
+    .image-wrapper img {
+      width: 100%;
+      border-radius: 14px;
+      object-fit: cover;
+      box-shadow: var(--shadow);
+    }
+
+    .steps-title {
+      font-weight: bold;
+      font-size: 16px;
+      text-align: center;
+      color: var(--text-dark);
+      margin-bottom: 12px;
+    }
+
+    .steps {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 16px;
+      width: 100%;
+      max-width: 360px;
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+    }
+
+    .steps p {
+      margin: 10px 0;
+      font-size: 14px;
+      color: var(--text-light);
+    }
+
+    .trust-alert {
+      background-color: #fff8e1;
+      border-left: 5px solid var(--primary);
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      max-width: 360px;
+      font-size: 14px;
+      color: #000;
+      border-radius: 6px;
+      box-shadow: var(--shadow);
+    }
+
+    .cta-button {
+      background: var(--primary);
+      color: #fff;
+      padding: 16px;
+      width: 100%;
+      max-width: 360px;
+      border: none;
+      border-radius: 8px;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      display: block;
+      box-shadow: var(--shadow);
+      transition: background 0.2s ease;
+    }
+
+    .cta-button:hover {
+      opacity: 0.9;
+    }
+
+    .why {
+      margin-top: 32px;
+      width: 100%;
+      max-width: 360px;
+      text-align: left;
+    }
+
+    .why-title {
+      font-size: 15px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: var(--text-dark);
+    }
+
+    .why ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .why li {
+      font-size: 14px;
+      margin-bottom: 8px;
+      padding-left: 20px;
+      position: relative;
+      color: var(--text-light);
+    }
+
+    .why li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: var(--success);
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-    <div class="dashboard">
-        <div class="welcome-section">
-            <h1>Bem-vinda de volta, Sarah.</h1>
-       <div class="button-group">
-                <a href="contracts" class="btn-primary">Criar Contrato</a>
-                <button class="btn-secondary">Contratos Recentes</button>
-            </div>
-        </div>
-
-        <div class="stats-grid">
-            <div class="stat-card">
-                <h3 class="section-title">Contratos Criados</h3>
-                <div class="stat-number">248</div>
-            </div>
-            <div class="stat-card">
-                <h3 class="section-title">Contratos de Aluguel</h3>
-                <div class="stat-number">156</div>
-            </div>
-            <div class="stat-card">
-                <h3 class="section-title">Contratos de Empréstimo</h3>
-                <div class="stat-number">72</div>
-            </div>
-        </div>
-
-        <div class="financial-card">
-            <h3 class="section-title">Financeiro</h3>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <h3 class="section-title">Boletos Pendentes</h3>
-                    <div class="stat-number">23</div>
-                </div>
-                <div class="stat-card">
-                    <h3 class="section-title">Boletos Pagos</h3>
-                    <div class="stat-number">154</div>
-                </div>
-            </div>
-        </div>
+  <header>
+    <div class="left">
+      <div class="logo">Rod Indica</div>
+      <a href="#how-it-works">Como funciona</a>
     </div>
+  </header>
+
+  <div class="container">
+    <div class="tagline">Seu empréstimo rápido e seguro</div>
+
+    <div class="highlight-negativado">Negativado? Aqui você tem vez!</div>
+
+  <div class="headline">
+  Precisa de dinheiro agora?<br>
+  Aprovação instantânea e valor na conta em <strong>5 minutos</strong>.
+</div>
+
+    <div class="benefits">
+      <span>✔ Até R$ 2.500 direto na conta via PIX</span>
+      <span>✔ Aceita negativados sem complicação</span>
+      <span>✔ Aprovação instantânea, direto no site</span>
+    </div>
+
+    <div class="image-wrapper">
+      <img src="https://images.pexels.com/photos/3756863/pexels-photo-3756863.jpeg" alt="Pessoa recebendo dinheiro no celular">
+    </div>
+
+    <div class="steps-title" id="how-it-works">Como funciona?</div>
+    <div class="steps">
+      <p>• Simule rapidamente – leva menos de 2 minutos</p>
+      <p>• Receba a aprovação na hora</p>
+      <p>• O valor cai via PIX em até 24h</p>
+    </div>
+
+    <div class="trust-alert">
+      ⚠️ <strong>Atenção!</strong> Não cobramos nenhum tipo de valor antecipado para liberação do seu novo empréstimo!
+    </div>
+
+    <a class="cta-button" href="https://susim.co/EO8KsbANh7GvN7XGXlOlkg==">QUERO SIMULAR AGORA →</a>
+
+    <div class="why">
+      <div class="why-title">Por que Rod Indica?</div>
+      <ul>
+        <li>Aprovação imediata</li>
+        <li>Ideal para quem está com nome negativado</li>
+        <li>Sem ligações ou papelada – 100% digital</li>
+        <li>Mais chance de conseguir crédito de verdade</li>
+      </ul>
+    </div>
+  </div>
 </body>
 </html>
